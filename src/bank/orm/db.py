@@ -2,10 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from bank.orm.base_orm import Base
+from bank.settings import settings
 
 
-__DATABASE_URL = "postgresql://user:test123@localhost:5432/bank"
-engine = create_engine(__DATABASE_URL)
+engine = create_engine(settings.database_uri.unicode_string())
 
 
 def init_session():

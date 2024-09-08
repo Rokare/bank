@@ -58,6 +58,14 @@ def test_delete_all_account_client(session):
     assert is_deleted
 
 
+def test_deposit_money(session):
+    pass
+
+
+def test_withdraw_from_account(session):
+    pass
+
+
 def test_get_all_accounts(session):
     test_create_account(session)
     list_accounts = AccountDao(session).get_all()
