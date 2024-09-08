@@ -40,11 +40,14 @@ class AccountDao(FullBaseDao):
 
     def modify(self, id: int, account: AccountIn):
         account_orm = self.session.get(AccountOrm, id)
-        for key, value in account.__dict__.items():
-            setattr(account_orm, key, value)
-        self.session.commit()
-        self.session.refresh(account_orm)
-        return account_orm
+        if account_orm is not None:
+            for key, value in account.__dict__.items():
+                setattr(account_orm, key, value)
+            self.session.commit()
+            self.session.refresh(account_orm)
+            return account_orm
+        else:
+            raise ValueNotFound(f"unable to modify an account with id : {id}")
 
     def delete_account_transactions(self, id: int):
         transactions = (
@@ -63,13 +66,16 @@ class AccountDao(FullBaseDao):
 
     def delete_by_id(self, id: int) -> AccountOrm:
         account = self.session.get(AccountOrm, id)
-        self.delete_account_transactions(id)
-        self.session.delete(account)
-        self.session.commit()
-        if self.session.get(AccountOrm, id) is None:
-            return True
+        if account is not None:
+            self.delete_account_transactions(id)
+            self.session.delete(account)
+            self.session.commit()
+            if self.session.get(AccountOrm, id) is None:
+                return True
+            else:
+                return False
         else:
-            return False
+            raise ValueNotFound(f"unable to find an account with id : {id}")
 
     def delete_all_account_by_id_client(self, id: int):
         accounts = self.get_by_id_client(id)

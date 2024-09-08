@@ -54,15 +54,27 @@ def create_account(
 
 
 @account_router.put("/{id}", status_code=status.HTTP_200_OK)
-def modify_client(
+def modify_account(
     id: int, account: AccountIn, session: Session = Depends(get_db_session)
 ) -> AccountOut:
-    account_dao = AccountDao(session).modify(id, account)
-    account_out = AccountOut.model_validate(account_dao.__dict__)
-    return account_out
+    try:
+        account_dao = AccountDao(session).modify(id, account)
+        account_out = AccountOut.model_validate(account_dao.__dict__)
+        return account_out
+    except Exception as err:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(err),
+        )
 
 
 @account_router.delete("/{id}", status_code=status.HTTP_200_OK)
 def delete_account(id: int, session: Session = Depends(get_db_session)):
-    is_deleted = AccountDao(session).delete_by_id(id)
-    return {"Is_Deleted": is_deleted}
+    try:
+        is_deleted = AccountDao(session).delete_by_id(id)
+        return {"Is_Deleted": is_deleted}
+    except Exception as err:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(err),
+        )

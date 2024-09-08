@@ -61,7 +61,6 @@ def delete_client(id: int, session: Session = Depends(get_db_session)):
         is_deleted = ClientDao(session).delete_by_id(id)
         return {"Is_Deleted": is_deleted}
     except Exception as err:
-        print(err)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(err),
