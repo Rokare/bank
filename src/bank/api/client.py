@@ -32,7 +32,7 @@ def get_client(id: int, session: Session = Depends(get_db_session)) -> ClientOut
 
 
 @client_router.post("/", status_code=status.HTTP_201_CREATED)
-def add_client(
+def create_client(
     client: ClientIn, session: Session = Depends(get_db_session)
 ) -> ClientOut:
     client_dao = ClientDao(session).create(client)

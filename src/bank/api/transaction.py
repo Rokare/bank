@@ -7,7 +7,7 @@ from bank.pojo.transaction_model import TransactionOut, TransactionIn
 from typing import List
 import logging
 
-transaction_router = APIRouter(tags=["transaction"], prefix="/transaction")
+transaction_router = APIRouter(tags=["Transaction"], prefix="/transaction")
 
 logger = logging.getLogger("uvicorn.error")
 logger.setLevel(logging.DEBUG)
@@ -28,16 +28,21 @@ def get_all_transactions(
 def create_transaction(
     transaction: TransactionIn, session: Session = Depends(get_db_session)
 ) -> TransactionOut:
-    transaction_dao = TransactionDao(session).create(transaction)
-    transaction_out = TransactionOut.model_validate(transaction_dao.__dict__)
-    return transaction_out
+    try:
+        transaction_dao = TransactionDao(session).create(transaction)
+        transaction_out = TransactionOut.model_validate(transaction_dao.__dict__)
+        return transaction_out
+    except Exception as err:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(err),
+        )
 
 
 @transaction_router.get("/{id}", status_code=status.HTTP_200_OK)
 def get_transaction_by_id(
     id: int, session: Session = Depends(get_db_session)
 ) -> TransactionOut:
-    logger.debug("this is a debug message")
     transaction_dao = TransactionDao(session).get_by_id(id)
     if transaction_dao is not None:
         transaction_out = TransactionOut.model_validate(transaction_dao.__dict__)

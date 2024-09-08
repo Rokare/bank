@@ -27,7 +27,7 @@ fastapi dev .\src\bank\api\main.py
 
 
 To test api features no need to uses a third party API testing like Insomnia or Postman.
-FastApi already include a doc generate with Swagger.
+FastApi already include a generated documentation with Swagger.
 You can test directly back-end api features.
 
 ![alt text](/img/image-1.png)
@@ -57,6 +57,7 @@ Then "Execute"
 - Get Account
 - Modify Account
 - Delete Account
+- Get Accounts From Id Client
 
 
 #### Transaction
