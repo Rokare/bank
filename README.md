@@ -32,6 +32,14 @@ You can test directly back-end api features.
 
 ![alt text](/img/image-1.png)
 
+To test an api route click on "Try it out"
+![alt text](/img/image-2.png)
+
+Then "Execute"
+![alt text](/img/image-3.png)
+
+#### Fast Api Docs : 
+##### [https://fastapi.tiangolo.com/](https://fastapi.tiangolo.com/)
 
 ### 3 -  Available features
 
